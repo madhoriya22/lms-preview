@@ -1,0 +1,6 @@
+<template>
+    <p></p><lightning-button label="Publish" title="Non-primary action" onclick={publishMC} class="slds-m-left_x-small"></lightning-button>
+    <lightning-button label="Subscribe" title="Non-primary action" onclick={subscribeMC} class="slds-m-left_x-small"></lightning-button>
+    <lightning-button label="Unsubscribe" title="Non-primary action" onclick={unsubscribeMC} class="slds-m-left_x-small"></lightning-button></p>
+    <p><lightning-textarea id="publishedMessage" rows="4" cols="50" label="Received Message:" value={receivedMessage}></lightning-textarea></p>
+</template>

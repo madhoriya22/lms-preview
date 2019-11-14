@@ -1,0 +1,51 @@
+<apex:page >
+    <head>
+        <apex:slds/>
+    </head>
+    <script>
+        // Load the Message Channel token in a variable
+        var SAMPLEMC = "{!$MessageChannel.lmsPreview__c}";
+    	var subscription;
+        function publishMC() {
+            console.log('called publicMC');
+            const message = {
+                recordId: "lms:vf:record",
+                recordData: { value: "Publishing From VF Page" }
+            }
+            sforce.one.publish(SAMPLEMC, message);
+            return false;
+        }
+        
+    	function handleMessage(message) {
+            console.log(message);
+            document.getElementById('publishedMessage').innerHTML = message ? message.recordData.value : 'no message payload';
+        }
+
+        function subscribeMC() {
+            if (!subscription) {
+                subscription = sforce.one.subscribe(SAMPLEMC, handleMessage);
+                return false;
+            }
+        }
+
+        function unsubscribeMC() {
+            if (subscription) {
+                sforce.one.unsubscribe(subscription);
+                subscription = null;
+                document.getElementById('publishedMessage').innerHTML = '';
+                return false;
+            }
+        }
+    </script>
+    <apex:form >
+        <div class="slds-scope">
+            <p>
+                <button class="slds-button slds-button_neutral" id="publishBtn" type="button" onClick="publishMC();">Publish</button>
+                <button class="slds-button slds-button_neutral" id="subscribeBtn" type="button" onClick="subscribeMC();">Subscribe</button>
+                <button class="slds-button slds-button_neutral" id="unsubscribeBtn" type="button" onClick="unsubscribeMC();">Unsubscribe</button>
+            </p>
+            <p>Received Message:</p>
+            <textarea id="publishedMessage" class="slds-textarea" rows="2" cols="50"></textarea>
+        </div>
+    </apex:form>
+</apex:page>
